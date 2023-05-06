@@ -150,6 +150,10 @@ class Message(BaseModel):
             query = query.limit(limit)
         return query
 
+    @classmethod
+    def get_last_message(cls):
+        return Message.select().order_by(Message.date.desc()).get()
+
     @property
     def chat(self):
         return self.chat_message_joins[0].chat

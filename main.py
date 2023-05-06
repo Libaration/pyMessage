@@ -1,9 +1,9 @@
 import os
 import configparser
 import colorama
-from database import monitorMessages, getLastMessage
+from database import monitorMessages
 from config import read_config
-from models.models import connect
+from models.models import *
 
 config = read_config()
 
@@ -13,7 +13,7 @@ def main():
     write_ahead_file = "chat.db-wal"
     messages_db_file = os.path.join(path, write_ahead_file)
     monitorMessages(messages_db_file)
-    last_message = getLastMessage(config.get("database", "db_file"))
+    last_message = Message.get_last_message().text
     print("Last message: {}".format(last_message))
     return last_message
 
