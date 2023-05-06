@@ -1,0 +1,10 @@
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore configuration files
+config.ini
+
+# Ignore database.cpython-*.pyc files
+database.cpython-*.pyc
+.DS_Store
