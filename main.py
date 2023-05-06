@@ -1,5 +1,4 @@
 import os
-import configparser
 import colorama
 from database import monitorMessages
 from config import read_config
@@ -16,12 +15,6 @@ def main():
     last_message = Message.get_last_message().text
     print("Last message: {}".format(last_message))
     return last_message
-
-
-def read_config():
-    config = configparser.ConfigParser()
-    config.read("config.ini")
-    return config
 
 
 if __name__ == "__main__":
