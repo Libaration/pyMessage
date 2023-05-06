@@ -8,7 +8,7 @@ import importlib
 config = read_config()
 
 
-def onMessage(trigger_type, callback):
+def onMessage(handler, callback):
     write_ahead_file = config.get("database", "write_ahead_file")
     print("Monitoring {}".format(write_ahead_file))
     previous_last_modified = None
@@ -26,7 +26,7 @@ def onMessage(trigger_type, callback):
         time.sleep(1)
     sync_db()
     print("New messages were received at {}".format(datetime.datetime.now()))
-    module_name = f"events.onMessage.triggers.{trigger_type}"
+    module_name = f"events.onMessage.handlers.{handler}"
     module = importlib.import_module(module_name)
-    trigger_function = getattr(module, f"{trigger_type}")
-    trigger_function(callback)
+    handler_function = getattr(module, f"{handler}")
+    handler_function(callback)
