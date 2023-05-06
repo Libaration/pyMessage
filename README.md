@@ -1,4 +1,4 @@
-Here's an updated version of the README.md file with more styling and personalization:
+ChatGPT wrote this btw.
 
 # pyMessage
 
