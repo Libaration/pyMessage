@@ -63,6 +63,22 @@ class Attachment(BaseModel):
 
 
 class Chat(BaseModel):
+    @property
+    def last_message(self):
+        return self.messages().order_by(Message.date.desc()).get()
+
+    @property
+    def messages(self, limit=None):
+        query = (
+            Message.select()
+            .join(ChatMessageJoin)
+            .where(ChatMessageJoin.chat == self)
+            .order_by(Message.date)
+        )
+        if limit is not None:
+            query = query.limit(limit)
+        return list(query.execute())
+
     rowid = AutoField(column_name="ROWID", null=True)
     account_id = TextField(null=True)
     account_login = TextField(null=True)
@@ -92,17 +108,6 @@ class Chat(BaseModel):
     successful_query = IntegerField(null=True)
     syndication_date = IntegerField(constraints=[SQL("DEFAULT 0")], null=True)
     syndication_type = IntegerField(constraints=[SQL("DEFAULT 0")], null=True)
-
-    def messages(self, limit=None):
-        query = (
-            Message.select()
-            .join(ChatMessageJoin)
-            .where(ChatMessageJoin.chat == self)
-            .order_by(Message.date)
-        )
-        if limit is not None:
-            query = query.limit(limit)
-        return query
 
     class Meta:
         table_name = "chat"
@@ -138,6 +143,13 @@ class ChatHandleJoin(BaseModel):
 
 
 class Message(BaseModel):
+    @classmethod
+    def get_all_messages(cls, limit=None):
+        query = Message.select().join(ChatMessageJoin).order_by(Message.date)
+        if limit is not None:
+            query = query.limit(limit)
+        return query
+
     @property
     def chat(self):
         return self.chat_message_joins[0].chat
