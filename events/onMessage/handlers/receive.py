@@ -6,5 +6,5 @@ config = read_config()
 
 
 def receive(callback):
-    last_message = Message.get_last_message().text
+    last_message = Message.get_last_message()
     callback(last_message)

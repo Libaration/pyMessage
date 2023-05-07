@@ -12,6 +12,9 @@ class BasePlugin:
         self.register_event("onMessageReceive", self.onMessageReceive)
         self.initialize()
 
+    def onMessageReceive(self, message):
+        pass
+
     def register_event(self, event_name, handler):
         self.event_handlers[event_name] = handler
 
