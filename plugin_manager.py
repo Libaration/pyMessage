@@ -1,6 +1,6 @@
 import inspect
 import importlib
-from plugins.baseplugin import BasePlugin
+from plugins.baseplugin.baseplugin import BasePlugin
 import os
 
 
@@ -10,6 +10,14 @@ class PluginManager:
 
     def register_plugin(self, plugin_cls):
         self.plugins.append(plugin_cls())
+
+    def onMessageReceive(self, message):
+        print("Message received")
+        print("Plugins: ", self.plugins)
+        print(self.plugins[0].event_handlers)
+        for plugin in self.plugins:
+            if "onMessageReceive" in plugin.event_handlers:
+                plugin.event_handlers["onMessageReceive"](message)
 
     def load_plugins(self):
         plugin_dir = os.path.join(os.path.dirname(__file__), "plugins")
